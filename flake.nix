@@ -6,7 +6,7 @@
 
   outputs = { nixpkgs, flake-utils, ... }: flake-utils.lib.eachDefaultSystem (system:
     let
-      pkgs = import nixpkgs { system = "x86_64-linux"; config.allowUnfree = true; };
+      pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
     in {
     formatter = pkgs.alejandra;
     devShell = pkgs.mkShell {
