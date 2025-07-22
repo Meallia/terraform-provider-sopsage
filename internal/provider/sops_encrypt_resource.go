@@ -75,7 +75,7 @@ func (r *sopsEncryptResource) Schema(_ context.Context, _ resource.SchemaRequest
 			"encrypted": schema.StringAttribute{
 				Description: "The encrypted content in SOPS format.",
 				Computed:    true,
-				Sensitive:   true,
+				Sensitive:   false,
 			},
 		},
 	}

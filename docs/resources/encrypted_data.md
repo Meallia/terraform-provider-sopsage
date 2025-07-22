@@ -33,5 +33,5 @@ resource "sopsage_encrypted_data" "test" {
 
 ### Read-Only
 
-- `encrypted` (String, Sensitive) The encrypted content in SOPS format.
+- `encrypted` (String) The encrypted content in SOPS format.
 - `id` (String) Identifier for the resource.
