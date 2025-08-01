@@ -73,12 +73,23 @@ func SopsDecryptDataFromAgeKey(data string, format string, agePrivateKey string)
 	decryptMutex.Lock()
 	defer decryptMutex.Unlock()
 
-	originalKey := os.Getenv("SOPS_AGE_KEY")
-	err := os.Setenv("SOPS_AGE_KEY", agePrivateKey)
-	if err != nil {
-		return "", err
+	storedSOPSEnv := make(map[string]string)
+	for _, env := range os.Environ() {
+		if strings.HasPrefix(env, "SOPS_") {
+			parts := strings.SplitN(env, "=", 2)
+			storedSOPSEnv[parts[0]] = parts[1]
+			os.Unsetenv(parts[0])
+		}
 	}
-	defer os.Setenv("SOPS_AGE_KEY", originalKey)
+
+	os.Setenv("SOPS_AGE_KEY", agePrivateKey)
+	defer os.Unsetenv("SOPS_AGE_KEY")
+
+	defer func() {
+		for key, value := range storedSOPSEnv {
+			os.Setenv(key, value)
+		}
+	}()
 
 	decrypted, err := decrypt.Data([]byte(data), format)
 	if err != nil {
