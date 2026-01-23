@@ -31,6 +31,15 @@ resource "sopsage_encrypted_data" "test" {
 - `content` (String) The content to encrypt.
 - `format` (String) The format of the content (json, yaml, etc.).
 
+### Optional
+
+- `encrypted_comment_regex` (String) Encrypted comment regex
+- `encrypted_regex` (String) Encrypted regex, defaults to ""
+- `encrypted_suffix` (String) Encrypted suffix, defaults to ""
+- `unencrypted_comment_regex` (String) Unencrypted comment regex, defaults to ""
+- `unencrypted_regex` (String) Unencrypted regex, defaults to ""
+- `unencrypted_suffix` (String) Unencrypted suffix, defaults to "_unencrypted", set to an empty string to disable
+
 ### Read-Only
 
 - `encrypted` (String) The encrypted content in SOPS format.
