@@ -2,10 +2,11 @@ package provider
 
 import (
 	"fmt"
-	"github.com/getsops/sops/v3/config"
 	"os"
 	"strings"
 	"sync"
+
+	"github.com/getsops/sops/v3/config"
 
 	"github.com/getsops/sops/v3"
 	"github.com/getsops/sops/v3/aes"
@@ -19,7 +20,25 @@ import (
 	sf "github.com/sa-/slicefunk"
 )
 
-func SopsEncryptDataFromAgeKeys(data string, format string, agePublicKeys []string) (string, error) {
+type EncryptionConfig struct {
+	UnencryptedSuffix       string
+	EncryptedSuffix         string
+	UnencryptedRegex        string
+	EncryptedRegex          string
+	UnencryptedCommentRegex string
+	EncryptedCommentRegex   string
+}
+
+func DefaultEncryptionConfig() *EncryptionConfig {
+	return &EncryptionConfig{
+		UnencryptedSuffix: "_unencrypted",
+	}
+}
+
+func SopsEncryptDataFromAgeKeys(data string, format string, agePublicKeys []string, encryptionConfig *EncryptionConfig) (string, error) {
+	if encryptionConfig == nil {
+		encryptionConfig = DefaultEncryptionConfig()
+	}
 	store := common.StoreForFormat(
 		formats.FormatFromString(format),
 		config.NewStoresConfig(),
@@ -38,9 +57,14 @@ func SopsEncryptDataFromAgeKeys(data string, format string, agePublicKeys []stri
 	tree := sops.Tree{
 		Branches: branches,
 		Metadata: sops.Metadata{
-			KeyGroups:         []sops.KeyGroup{sf.Map(masterKeys, func(key *keysource.MasterKey) keys.MasterKey { return keys.MasterKey(key) })},
-			UnencryptedSuffix: "_unencrypted",
-			Version:           version.Version,
+			KeyGroups:               []sops.KeyGroup{sf.Map(masterKeys, func(key *keysource.MasterKey) keys.MasterKey { return keys.MasterKey(key) })},
+			Version:                 version.Version,
+			UnencryptedSuffix:       encryptionConfig.UnencryptedSuffix,
+			EncryptedSuffix:         encryptionConfig.EncryptedSuffix,
+			UnencryptedRegex:        encryptionConfig.UnencryptedRegex,
+			EncryptedRegex:          encryptionConfig.EncryptedRegex,
+			UnencryptedCommentRegex: encryptionConfig.UnencryptedCommentRegex,
+			EncryptedCommentRegex:   encryptionConfig.EncryptedCommentRegex,
 		},
 	}
 

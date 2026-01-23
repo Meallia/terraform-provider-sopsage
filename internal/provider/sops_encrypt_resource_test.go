@@ -1,6 +1,3 @@
-// Copyright (c) HashiCorp, Inc.
-// SPDX-License-Identifier: MPL-2.0
-
 package provider
 
 import (
@@ -20,6 +17,7 @@ func TestSopsEncryptResourceResource(t *testing.T) {
 					resource "sopsage_encrypted_data" "test" {
                       format = "yaml"
                       content = yamlencode({foo = "bar"})
+					  encrypted_regex = "^f.*"
 					  age_public_keys = [
 						data.sopsage_public_key_from_ssh.test.age_public_key,
 						data.sopsage_public_key_from_ssh.test.age_public_key

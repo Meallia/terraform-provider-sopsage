@@ -4,18 +4,27 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { nixpkgs, flake-utils, ... }: flake-utils.lib.eachDefaultSystem (system:
-    let
-      pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
+  outputs = {
+    nixpkgs,
+    flake-utils,
+    ...
+  }:
+    flake-utils.lib.eachDefaultSystem (system: let
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
     in {
-    formatter = pkgs.alejandra;
-    devShell = pkgs.mkShell {
-      buildInputs = with pkgs; [
-        go
-        terraform
-        gnumake
-		golangci-lint
-      ];
-    };
-  });
+      formatter = pkgs.alejandra;
+      devShell = pkgs.mkShellNoCC {
+        buildInputs = with pkgs; [
+          go
+          terraform
+          gnumake
+          golangci-lint
+        ];
+
+        GOROOT = "${pkgs.go}/share/go";
+      };
+    });
 }
