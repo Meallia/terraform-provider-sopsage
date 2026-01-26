@@ -34,11 +34,11 @@ resource "sopsage_encrypted_data" "test" {
 ### Optional
 
 - `encrypted_comment_regex` (String) Encrypted comment regex
-- `encrypted_regex` (String) Encrypted regex, defaults to ""
-- `encrypted_suffix` (String) Encrypted suffix, defaults to ""
-- `unencrypted_comment_regex` (String) Unencrypted comment regex, defaults to ""
-- `unencrypted_regex` (String) Unencrypted regex, defaults to ""
-- `unencrypted_suffix` (String) Unencrypted suffix, defaults to "_unencrypted", set to an empty string to disable
+- `encrypted_regex` (String) Encrypted regex, defaults to "". Cannot use more than one of encrypted_suffix, unencrypted_suffix, encrypted_regex, unencrypted_regex, encrypted_comment_regex, or unencrypted_comment_regex in the same file.
+- `encrypted_suffix` (String) Encrypted suffix, defaults to "". Cannot use more than one of encrypted_suffix, unencrypted_suffix, encrypted_regex, unencrypted_regex, encrypted_comment_regex, or unencrypted_comment_regex in the same file.
+- `unencrypted_comment_regex` (String) Unencrypted comment regex, defaults to "". Cannot use more than one of encrypted_suffix, unencrypted_suffix, encrypted_regex, unencrypted_regex, encrypted_comment_regex, or unencrypted_comment_regex in the same file.
+- `unencrypted_regex` (String) Unencrypted regex, defaults to "". Cannot use more than one of encrypted_suffix, unencrypted_suffix, encrypted_regex, unencrypted_regex, encrypted_comment_regex, or unencrypted_comment_regex in the same file.
+- `unencrypted_suffix` (String) Unencrypted suffix, defaults to "". Cannot use more than one of encrypted_suffix, unencrypted_suffix, encrypted_regex, unencrypted_regex, encrypted_comment_regex, or unencrypted_comment_regex in the same file.
 
 ### Read-Only
 
