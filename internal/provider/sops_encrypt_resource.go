@@ -94,7 +94,7 @@ func (r *sopsEncryptResource) Schema(_ context.Context, _ resource.SchemaRequest
 				Optional:      true,
 				Computed:      true,
 				PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()},
-				Default:       stringdefault.StaticString("_unencrypted"),
+				Default:       stringdefault.StaticString(""),
 			},
 			"encrypted_suffix": schema.StringAttribute{
 				Description:   "Encrypted suffix, defaults to \"\". Cannot use more than one of encrypted_suffix, unencrypted_suffix, encrypted_regex, unencrypted_regex, encrypted_comment_regex, or unencrypted_comment_regex in the same file.",
